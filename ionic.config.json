@@ -1,0 +1,7 @@
+{
+  "name": "GroceryBoost",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
