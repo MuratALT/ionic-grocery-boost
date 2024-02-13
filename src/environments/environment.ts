@@ -11,8 +11,8 @@ export const environment = {
     storageBucket: 'ionic-project-f28b6.appspot.com',
     messagingSenderId: '728716998088',
     appId: '1:728716998088:web:f1fa4e21c6091ec320bcfd',
-    locationId: 'europe-west',
-    databaseURL: 'https://ionic-project-f28b6-default-rtdb.firebaseio.com',
+    //locationId: 'europe-west',
+    //databaseURL: 'https://ionic-project-f28b6-default-rtdb.firebaseio.com',
   },
 };
 
