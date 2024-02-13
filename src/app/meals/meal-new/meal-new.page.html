@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/meals"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nouveau repas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large" class="ion-text-center">Nouveau repas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-item>
+    <ion-input type="text" label="Nom" labelPlacement="floating" fill="outline" [(ngModel)]="meal.name"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-textarea label="Recette" rows="10" [counter]="true" maxlength="640" [counterFormatter]="customCounterFormatter"
+      labelPlacement="floating" fill="outline" [(ngModel)]="meal.recipe"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-input type="file" label="Image" [(ngModel)]="meal.picture"></ion-input>
+  </ion-item>
+  <p class="text-center">
+    <ion-button (click)="add()">Envoyer</ion-button>
+  </p>
+</ion-content>
