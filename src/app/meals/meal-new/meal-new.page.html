@@ -14,16 +14,83 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-item>
+  <ion-item class="ion-margin-vertical">
     <ion-input type="text" label="Nom" labelPlacement="floating" fill="outline" [(ngModel)]="meal.name"></ion-input>
   </ion-item>
-  <ion-item>
-    <ion-textarea label="Recette" rows="10" [counter]="true" maxlength="640" [counterFormatter]="customCounterFormatter"
-      labelPlacement="floating" fill="outline" [(ngModel)]="meal.recipe"></ion-textarea>
-  </ion-item>
+
   <ion-item>
     <ion-input type="file" label="Image" [(ngModel)]="meal.picture"></ion-input>
   </ion-item>
+
+  <ion-item>
+    <ion-grid class="ion-margin-vertical">
+      <ion-row style="display: flex; align-items: center;">
+        <ion-col size="9">
+          <ion-label>
+            <h2>Ingrédients</h2>
+            <p>Ajoutez ici les ingrédients de votre plat</p>
+          </ion-label>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button (click)="toggleIngredientForm()"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row id="ingredientAddingForm" *ngIf="showAddIngredientForm" class="ion-margin-vertical">
+        <ion-item class="ion-margin-vertical">
+          <ion-input type="number" label="Quantité" labelPlacement="floating" fill="outline"
+            [(ngModel)]="ingredient.quantity"></ion-input>
+          <ion-input type="text" label="Unité" labelPlacement="floating" fill="outline"
+            [(ngModel)]="ingredient.unit"></ion-input>
+          <ion-input type="text" label="Nom" labelPlacement="floating" fill="outline"
+            [(ngModel)]="ingredient.name"></ion-input>
+        </ion-item>
+        <ion-item lines="none" style="margin: auto;">
+          <ion-button (click)="addIngredient()" color="success">Ajouter</ion-button>
+        </ion-item>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-list color="light" *ngIf="meal.ingredients.length <= 0">
+            <ion-item>
+              <ion-label>
+                <p>
+                  Aucun ingrédient
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+
+          <ion-list color="light" *ngIf="meal.ingredients.length > 0">
+            <ion-item *ngFor="let ingredient of meal.ingredients; let i = index">
+              <ion-row style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <ion-col>
+                  <ion-row>
+                    <ion-col>{{ingredient.quantity}}</ion-col>
+                    <ion-col>{{ingredient.unit}}</ion-col>
+                    <ion-col>{{ingredient.name}}</ion-col>
+                  </ion-row>
+                </ion-col>
+
+                <ion-col>
+                  <ion-row>
+                    <ion-button (click)="removeIngredient(i)"><ion-icon name="trash-outline"></ion-icon></ion-button>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
+  <ion-item class="ion-margin-vertical">
+    <ion-textarea label="Recette" rows="10" [counter]="true" maxlength="640" [counterFormatter]="customCounterFormatter"
+      labelPlacement="floating" fill="outline" [(ngModel)]="meal.recipe"></ion-textarea>
+  </ion-item>
+
   <p class="text-center">
     <ion-button (click)="add()">Envoyer</ion-button>
   </p>

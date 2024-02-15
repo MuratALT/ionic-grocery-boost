@@ -1,12 +1,12 @@
 export class Ingredient {
   id?: string;
   name: string;
-  quantity: number;
+  quantity: number | null;
   unit: string;
 
   constructor() {
     this.name = '';
-    this.quantity = 0;
+    this.quantity = null;
     this.unit = '';
   }
 }

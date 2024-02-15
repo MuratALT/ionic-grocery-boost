@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { Ingredient } from 'src/app/model/ingredient';
 import { Meal } from 'src/app/model/meal';
 import { MealService } from 'src/app/service/meal.service';
 
@@ -11,6 +12,8 @@ import { MealService } from 'src/app/service/meal.service';
 })
 export class MealNewPage implements OnInit {
   public meal!: Meal;
+  public ingredient!: Ingredient;
+  public showAddIngredientForm: boolean = false;
 
   constructor(
     private MealService: MealService,
@@ -20,6 +23,20 @@ export class MealNewPage implements OnInit {
 
   ngOnInit() {
     this.meal = new Meal();
+    let firstIngredient = new Ingredient();
+    firstIngredient.name = 'Steak';
+    firstIngredient.quantity = 1;
+    firstIngredient.unit = 'kg';
+
+    let secondIngredient = new Ingredient();
+    secondIngredient.name = 'Frites';
+    secondIngredient.quantity = 500;
+    secondIngredient.unit = 'g';
+
+    this.meal.ingredients = [firstIngredient, secondIngredient];
+
+    this.ingredient = new Ingredient();
+    this.showAddIngredientForm = false;
   }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
@@ -40,11 +57,25 @@ export class MealNewPage implements OnInit {
 
   add() {
     this.MealService.save(this.meal).subscribe(() => {
-      console.log('1');
       this.meal = new Meal();
       this.presentToast();
       console.log('Meal saved successfully');
       console.log(this.meal);
     });
+  }
+
+  toggleIngredientForm() {
+    this.showAddIngredientForm = !this.showAddIngredientForm;
+  }
+
+  addIngredient() {
+    this.meal.ingredients.push(this.ingredient);
+    this.ingredient = new Ingredient();
+    this.showAddIngredientForm = true;
+  }
+
+  removeIngredient(id: number) {
+    this.meal.ingredients.splice(id, 1);
+    console.log(this.meal);
   }
 }
