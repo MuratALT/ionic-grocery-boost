@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/meals"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consultation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Consultation du repas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card *ngIf="meal">
+    <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+    <ion-card-header>
+      <ion-card-title>{{meal.name}}</ion-card-title>
+      <!--<ion-card-subtitle>Durée {{meal.time}}</ion-card-subtitle>-->
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>{{meal.recipe}}</p>
+    </ion-card-content>
+
+
+  </ion-card>
+
+  <div class="ion-margin-start">
+    <ion-label>
+      <h2>Ingrédients</h2>
+      <p>Visualisez ici les ingrédients de votre plat</p>
+    </ion-label>
+  </div>
+
+
+  <ion-list color="light" *ngIf="meal.ingredients.length <= 0">
+    <ion-item>
+      <ion-label>
+        <p>
+          Aucun ingrédient
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list color="light" *ngIf="meal.ingredients">
+    <ion-item *ngFor="let ingredient of meal.ingredients; let i = index">
+      <ion-row style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <ion-col>
+          <ion-row>
+            <ion-col>{{ingredient.quantity}}</ion-col>
+            <ion-col>{{ingredient.unit}}</ion-col>
+            <ion-col>{{ingredient.name}}</ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+</ion-content>

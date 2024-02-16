@@ -5,19 +5,18 @@ import {
 } from '@angular/fire/compat/firestore';
 
 import { Meal } from '../model/meal';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MealService {
+  mealSubject = new Subject<Meal[]>();
   private dbPath = '/meal';
   mealsRef: AngularFirestoreCollection<Meal>;
 
   constructor(private db: AngularFirestore) {
     this.mealsRef = db.collection(this.dbPath);
-    console.log('db');
-    console.log(db.collection);
   }
 
   getAll(): any {
@@ -36,5 +35,27 @@ export class MealService {
         obs.next();
       });
     });
+  }
+
+  update(meal: Meal) {
+    return new Observable((obs) => {
+      this.mealsRef.doc(meal.id).update(meal);
+      obs.next();
+    });
+  }
+
+  get(id: string): any {
+    return new Observable((obs) => {
+      this.mealsRef
+        .doc(id)
+        .get()
+        .subscribe((res) => {
+          obs.next({ id: res.id, ...res.data() });
+        });
+    });
+  }
+
+  delete(id: string) {
+    this.db.doc(`meal/${id}`).delete();
   }
 }

@@ -14,8 +14,19 @@ const routes: Routes = [
       import('./meal-new/meal-new.module').then((m) => m.MealNewPageModule),
   },
   {
+    path: 'edit/:id',
+    loadChildren: () =>
+      import('./meal-edit/meal-edit.module').then((m) => m.MealEditPageModule),
+  },
+  {
     path: 'meal-new',
-    loadChildren: () => import('./meal-new/meal-new.module').then( m => m.MealNewPageModule)
+    loadChildren: () =>
+      import('./meal-new/meal-new.module').then((m) => m.MealNewPageModule),
+  },
+  {
+    path: 'show/:id',
+    loadChildren: () =>
+      import('./meal-show/meal-show.module').then((m) => m.MealShowPageModule),
   },
 ];
 

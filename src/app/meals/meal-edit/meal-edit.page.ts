@@ -1,30 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Ingredient } from 'src/app/model/ingredient';
 import { Meal } from 'src/app/model/meal';
 import { MealService } from 'src/app/service/meal.service';
 
 @Component({
-  selector: 'app-meal-new',
-  templateUrl: './meal-new.page.html',
-  styleUrls: ['./meal-new.page.scss'],
+  selector: 'app-meal-edit',
+  templateUrl: './meal-edit.page.html',
+  styleUrls: ['./meal-edit.page.scss'],
 })
-export class MealNewPage implements OnInit {
+export class MealEditPage implements OnInit {
   public meal!: Meal;
+  public mealId: string = '';
   public ingredient!: Ingredient;
   public showAddIngredientForm: boolean = false;
 
   constructor(
-    private MealService: MealService,
+    private mealService: MealService,
     private toastCtrl: ToastController,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.meal = new Meal();
     this.ingredient = new Ingredient();
     this.showAddIngredientForm = false;
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id !== null) {
+      this.mealId = id;
+    }
+    this.mealService.get(this.mealId).subscribe((data: any) => {
+      this.meal = data;
+    });
   }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
@@ -33,23 +43,20 @@ export class MealNewPage implements OnInit {
 
   async presentToast() {
     const toast = this.toastCtrl.create({
-      message: 'Le repas a été ajouté avec succès.',
+      message: 'Le repas a été modifié avec succès.',
       duration: 2000,
     });
     (await toast).present().then(() => {
       setTimeout(() => {
         this.router.navigate(['/meals']);
-      }, 2000);
+      }, 500);
     });
   }
 
-  add() {
+  save() {
     const jsonifiedMeal = this.JsonifyMeal();
-    this.MealService.save(jsonifiedMeal).subscribe(() => {
-      this.meal = new Meal();
-      this.ingredient = new Ingredient();
+    this.mealService.update(jsonifiedMeal).subscribe(() => {
       this.presentToast();
-      console.log(this.meal);
     });
   }
 
