@@ -34,6 +34,13 @@ const routes: Routes = [
           import('../planner/planner.module').then((m) => m.PlannerPageModule),
       },
       {
+        path: 'groceries',
+        loadChildren: () =>
+          import('../groceries/groceries.module').then(
+            (m) => m.GroceriesPageModule
+          ),
+      },
+      {
         path: 'photos',
         loadChildren: () =>
           import('../photos/photos.module').then((m) => m.PhotosPageModule),

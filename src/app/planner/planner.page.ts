@@ -12,11 +12,7 @@ import { CalendarService } from '../service/calendar.service';
 export class PlannerPage implements OnInit {
   calendars!: Array<Calendar>;
 
-  constructor(
-    private mealService: MealService,
-    private calendarService: CalendarService,
-    private alertCtrl: AlertController
-  ) {}
+  constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {
     this.calendarService.getAll().subscribe((data: any) => {

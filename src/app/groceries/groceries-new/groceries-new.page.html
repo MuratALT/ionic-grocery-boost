@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/groceries"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nouvelle liste</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Nouvelle liste</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-label>
+        <h2 class="ion-text-center">Planning concerné :</h2>
+      </ion-label>
+    </ion-row>
+
+    <ion-row>
+      <ion-select aria-label="calendar" [disabled]="planningVisibility" label="Sélectionner une période"
+        labelPlacement="stacked" [(ngModel)]="selectedPlanningOptionId">
+        <ion-select-option *ngFor="let calendar of calendars" [value]="calendar.id">
+          {{calendar.startDate | date: 'dd/MM/yyyy'}} - {{calendar.endDate | date: 'dd/MM/yyyy'}}
+        </ion-select-option>
+      </ion-select>
+    </ion-row>
+
+    <ion-row style="display: flex; justify-content: center;" class="ion-margin-vertical">
+      <ion-button *ngIf="planningVisibility" color="warning" (click)="updatePlanning()">Modifier</ion-button>
+      <ion-button color="primary" (click)="confirmPlanning()">Confirmer</ion-button>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="groceryListCreation">
+    <ion-row>
+      <ion-label>
+        <h2 class="ion-text-center">Liste de course :</h2>
+      </ion-label>
+    </ion-row>
+    <ion-row style="background-color: grey; color: white; border-radius: 10px;">
+      <ion-col>
+        <ion-button color="secondary" (click)="handleShowAddIngredientForm()">Ajouter</ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row id="ingredientAddingForm" *ngIf="showAddIngredientForm" class="ion-margin-vertical">
+      <ion-item class="ion-margin-vertical">
+        <ion-input type="number" label="Quantité" labelPlacement="floating" fill="outline"
+          [(ngModel)]="newIngredient.quantity"></ion-input>
+        <ion-input type="text" label="Unité" labelPlacement="floating" fill="outline"
+          [(ngModel)]="newIngredient.unit"></ion-input>
+        <ion-input type="text" label="Nom" labelPlacement="floating" fill="outline"
+          [(ngModel)]="newIngredient.name"></ion-input>
+      </ion-item>
+      <ion-item lines="none" style="margin: auto;">
+        <ion-button (click)="addIngredient()" color="success">Ajouter</ion-button>
+      </ion-item>
+    </ion-row>
+
+    <ion-item>
+      <ion-row>
+        <ion-col size="12">
+          <ion-list color="light" *ngIf="groceriesIngredients.groceries.length <= 0">
+            <ion-item>
+              <ion-label>
+                <p>
+                  Aucun ingrédient
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+
+          <ion-list color="light" *ngIf="groceriesIngredients.groceries.length > 0">
+            <ion-item *ngFor="let grocery of groceriesIngredients.groceries; let i = index">
+              <ion-row style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <ion-col>
+                  <ion-row *ngIf="!grocery.checked">
+                    <ion-col>
+                      <ion-checkbox [checked]="grocery.checked" (click)="handleCheckIngredient(i)"></ion-checkbox>
+                    </ion-col>
+                    <ion-col>
+                      <ion-input fill="outline" type="number" [(ngModel)]="grocery.ingredient.quantity"></ion-input>
+                    </ion-col>
+                    <ion-col>
+                      <ion-input fill="outline" type="text" [(ngModel)]="grocery.ingredient.unit"></ion-input>
+                    </ion-col>
+                    <ion-col>
+                      <ion-input fill="outline" type="text" [(ngModel)]="grocery.ingredient.name"></ion-input>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row *ngIf="grocery.checked" style="background-color: lightgray; opacity: 0.7">
+                    <ion-col>
+                      <ion-checkbox [checked]="grocery.checked" (click)="handleCheckIngredient(i)"></ion-checkbox>
+                    </ion-col>
+                    <ion-col>
+                      {{grocery.ingredient.quantity}}
+                    </ion-col>
+                    <ion-col>
+                      {{grocery.ingredient.unit}}
+                    </ion-col>
+                    <ion-col>
+                      {{grocery.ingredient.name}}
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+
+                <ion-col>
+                  <ion-row>
+                    <ion-button (click)="removeGrocery(i)"><ion-icon name="trash-outline"></ion-icon></ion-button>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-grid>
+
+  <ion-button style="display: flex; justify-content: center;" *ngIf="groceryListCreation" color="success"
+    (click)="confirmGroceryList()">Enregistrer</ion-button>
+</ion-content>

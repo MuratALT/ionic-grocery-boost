@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Les listes de courses</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mes listes de course</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-button routerLink="/groceries/new">Créer une nouvelle liste</ion-button>
+  <ion-card style="margin-bottom: 100px;">
+    <ion-card-header>
+      <ion-card-title>Toutes mes listes de course</ion-card-title>
+      <ion-card-subtitle>Toutes vos listes de course répertorié par ordre chronologique !</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngFor="let grocery of groceries">
+        <ion-item class="ion-margin-vertical">
+          <ion-thumbnail slot="start">
+            <img src="{{getReformattedSrc()}}" alt="">
+          </ion-thumbnail>
+          <ion-label>Période du <strong>{{getReformattedDate(grocery.startDate)}}</strong> au
+            <strong>{{getReformattedDate(grocery.endDate)}}</strong></ion-label>
+          <div style="display: flex; flex-direction: column;">
+            <ion-button color="primary" [routerLink]="['/groceries/show', grocery.id]"><ion-icon
+                name="eye-outline"></ion-icon></ion-button>
+            <ion-button color="danger" (click)="setDelete(grocery.id)"><ion-icon
+                name="trash-outline"></ion-icon></ion-button>
+          </div>
+
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
