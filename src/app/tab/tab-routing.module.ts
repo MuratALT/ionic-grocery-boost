@@ -29,6 +29,11 @@ const routes: Routes = [
           import('../meals/meals.module').then((m) => m.MealsPageModule),
       },
       {
+        path: 'planner',
+        loadChildren: () =>
+          import('../planner/planner.module').then((m) => m.PlannerPageModule),
+      },
+      {
         path: 'photos',
         loadChildren: () =>
           import('../photos/photos.module').then((m) => m.PhotosPageModule),

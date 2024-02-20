@@ -1,0 +1,107 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/planner"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consultation du planning</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large"></ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-button [color]="plannerEditButton.color" (click)="handlePlannerUpdate()">{{plannerEditButton.text}}</ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-label>
+          <h2 class="ion-text-center">Date de début</h2>
+        </ion-label>
+        <div *ngIf="!editableMode">
+          <h4 class="ion-text-center" style="font-weight: bold">{{getReformattedDate(calendar.startDate)}}</h4>
+        </div>
+        <div *ngIf="editableMode">
+          <ion-datetime-button disabled="{{calendarVisibility}}" datetime="startDatetime"
+            presentation="date"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime [(ngModel)]="calendar.startDate" #startTime id="startDatetime" presentation="date"
+                firstDayOfWeek="1">
+                <ion-buttons slot="buttons">
+                  <ion-button color="danger" (click)="startTime.reset()">Réinitialiser</ion-button>
+                  <ion-button color="primary" (click)="startTime.confirm(true)">Confirmer</ion-button>
+                </ion-buttons>
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </div>
+
+      </ion-col>
+
+
+      <ion-col>
+        <ion-label>
+          <h2 class="ion-text-center">Date de fin</h2>
+        </ion-label>
+        <div *ngIf="!editableMode">
+          <h4 class="ion-text-center" style="font-weight: bold">{{getReformattedDate(calendar.endDate)}}</h4>
+        </div>
+        <div *ngIf="editableMode">
+          <ion-datetime-button disabled="{{calendarVisibility}}" datetime="endDateTimePicker"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime #endTime id="endDateTimePicker" presentation="date" firstDayOfWeek="1"
+                [(ngModel)]="calendar.endDate">
+                <ion-buttons slot="buttons">
+                  <ion-button color="danger" (click)="endTime.reset()">Réinitialiser</ion-button>
+                  <ion-button color="primary" (click)="endTime.confirm(true)">Confirmer</ion-button>
+                </ion-buttons>
+              </ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <div *ngIf="editableMode">
+      <ion-row style="display: flex; justify-content: center;" class="ion-margin-vertical">
+        <ion-button *ngIf="calendarVisibility" color="warning" (click)="updateCalendar()">Modifier</ion-button>
+        <ion-button color="primary" (click)="confirmCalendar()">Confirmer</ion-button>
+      </ion-row>
+    </div>
+
+    <ion-list style="display: flex; justify-content: center; flex-direction: column">
+      <ion-item *ngFor="let planner of calendar.planners; let i = index">
+        <ion-row style="display:flex; align-items: center;">
+          <ion-col>{{reformatDate(planner)}}</ion-col>
+          <ion-col *ngIf="editableMode">
+            <ion-select aria-label="planner" label="Sélectionner un repas" labelPlacement="stacked"
+              [(ngModel)]="selectedMealOptionIds[i]">
+              <ion-select-option *ngFor="let meal of meals" [value]="meal.id">{{meal.name}}</ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col *ngIf="!editableMode">
+            <div class="ion-text-center">
+              {{planner.meal.name}}
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+
+
+  </ion-grid>
+
+  <p class="ion-text-center ion-margin-vertical" *ngIf="editableMode">
+    <ion-button color="success" (click)="handleConfirm()">Confirmer les modifications</ion-button>
+  </p>
+  <p class="ion-text-center ion-margin-vertical">
+    <ion-button color="danger" (click)="handleDelete()">Supprimer</ion-button>
+  </p>
+</ion-content>
